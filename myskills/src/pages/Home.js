@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   SafeAreaView,
@@ -12,14 +12,27 @@ import { SkillCard } from "../components/SkillCard";
 export function Home() {
   const [newSkill, setNewSkill] = useState("");
   const [mySkills, setMySkills] = useState([]);
+  const [greeting, setGreeting] = useState("");
 
   function handleAddNewSkill() {
     setMySkills((oldSkills) => [...oldSkills, newSkill]);
   }
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting("Good Morning");
+    } else if (currentHour >= 12 && currentHour < 18) {
+      setGreeting("Good afternoon");
+    } else {
+      setGreeting("Good Evening");
+    }
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Welcome, Lucas</Text>
+      <Text style={styles.grettings}>{greeting}</Text>
       <TextInput
         style={styles.inputBody}
         placeholder={"New Skill"}
@@ -43,7 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "black",
 
-    paddingVertical: 70,
+    paddingVertical: 20,
     paddingHorizontal: 30,
   },
   title: {
@@ -51,7 +64,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-
+  grettings: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "bold",
+  },
   inputBody: {
     backgroundColor: "#1f1e25",
     color: "#fff",
